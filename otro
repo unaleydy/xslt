@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+<xsl:output method="html" indent="yes"/>
+<xsl:template match="/">
+<html>
+<head>
+<title>Tabla de Máquinas</title>
+</head>
+<body>
+<h1>Tabla de Máquinas</h1>
+<table border="1">
+<tr>
+<th>Máquina</th>
+<th>Procesador</th>
+<th>Memoria</th>
+</tr>
+<xsl:apply-templates select="equipos/máquina"/>
+</table>
+</body>
+</html>
+</xsl:template>
+<xsl:template match="equipos/máquina">
+<tr>
+<td>
+<a href="{concat('http://',config/IP)}"><xsl:value-of select="@nombre"/></a>
+</td>
+<td><xsl:value-of select="hardware/procesador"/></td>
+<td><xsl:value-of select="hardware/memoria"/>GB</td>
+</tr>
+</xsl:template>
+</xsl:stylesheet>
