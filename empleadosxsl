@@ -1,0 +1,65 @@
+sl:template match="/">
+        <html>
+            <head>
+                <title>Lista de Empleados</title>
+            </head>
+            <body>
+                <h1>Lista de Empleados</h1>
+                <table border="1">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Salario</th>
+                        <th>Departamento</th>
+                        <th>Fecha de Contratación</th>
+                        <th>Dirección</th>
+                        <th>Teléfonos</th>
+                    </tr>
+                    <xsl:apply-templates select="Empleados/Empleado"/>
+                </table>
+                <h1>Observaciones</h1>
+                <xsl:for-each select="//Empleado">
+                    <ul>
+                        <li>
+                            <xsl:choose>
+                                <xsl:when test="count(Observaciones) = 0">
+                                    <xsl:value-of select="@EMPLEADO_ID"/>-SIN COMENTARIOS
+                                </xsl:when>
+                                <xsl:when test="Observaciones">
+                                    <xsl:value-of select="Observaciones/text()"/>
+                                </xsl:when>
+                            </xsl:choose>
+                        </li>
+                    </ul>
+                </xsl:for-each>
+            </body>
+        </html>
+    </xsl:template>
+    <xsl:template match="Empleado">
+        <tr>
+            <td><xsl:value-of select="@EMPLEADO_ID"/></td>
+            <td><xsl:value-of select="@NOMBRE"/></td>
+            <td><xsl:value-of select="@APELLIDO"/></td>
+            <td><xsl:value-of select="@SALARIO"/></td>
+            <td><xsl:value-of select="@DEPARTAMENTO"/></td>
+            <td><xsl:apply-templates select="FechaContratacion"/></td>
+            <td><xsl:value-of select="//Direccion/Calle/text()"/></td>
+            <td>
+                <xsl:for-each select="Telefonos/Telefono">
+                    <xsl:choose>
+                        <xsl:when test="@TIPO='Móvil'">
+                            * <xsl:value-of select="."/>
+                        </xsl:when>
+                        <xsl:when test="@TIPO='Fijo'">
+                            <xsl:value-of select="."/>
+                        </xsl:when>
+                    </xsl:choose>
+                </xsl:for-each>
+            </td>
+        </tr>
+    </xsl:template>
+    <xsl:template match="FechaContratacion">
+        <xsl:value-of select="text()"/>
+    </xsl:template>
+</xsl:stylesheet>
